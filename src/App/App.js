@@ -5,6 +5,7 @@ import 'firebase/auth';
 import fbConnection from '../helpers/data/connection';
 
 import './App.scss';
+import MyNavbar from '../Components/Navbar/Navbar';
 
 fbConnection();
 
@@ -24,10 +25,10 @@ class App extends React.Component {
   }
 
   render() {
+    const { authed } = this.state;
     return (
       <div className="App">
-        <h2>INSIDE APP COMPONENT</h2>
-        <button className="btn btn-info"><i class="fab fa-react"></i> I am a button</button>
+        <MyNavbar authed={authed}/>
       </div>
     );
   }
