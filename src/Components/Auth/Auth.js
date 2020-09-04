@@ -17,7 +17,7 @@ class Auth extends React.Component {
   render() {
     const { authed } = this.props;
     return (
-      <div className="Auth">
+      <div className="Auth mr-right">
         <button className={authed ? 'btn btn-danger' : 'btn btn-warning'} onClick={authed ? this.logoutClickEvent : this.loginClickEvent}>
           {authed ? 'Log Out' : 'Login Via Google'}
         </button>
