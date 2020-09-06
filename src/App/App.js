@@ -23,19 +23,17 @@ import './App.scss';
 
 fbConnection();
 
-const PublicRoute = ({ component: Component, ...rest }) => {
-  const routeChecker = (props) => (
-    props.authed
-      ? (<Component {...props} />)
-      : (<Redirect to={{ pathname: '/', state: { from: props.location } }} />));
+const PublicRoute = ({ component: Component, authed, ...rest }) => {
+  const routeChecker = (props) => (authed === false
+    ? (<Component {...props} />)
+    : (<Redirect to={{ pathname: '/home', state: { from: props.location } }} />));
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const routeChecker = (props) => (
-    props.authed
-      ? (<Component {...props} />)
-      : (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />));
+const PrivateRoute = ({ component: Component, authed, ...rest }) => {
+  const routeChecker = (props) => (authed === true
+    ? (<Component {...props} />)
+    : (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />));
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
