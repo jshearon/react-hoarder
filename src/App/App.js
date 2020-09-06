@@ -37,8 +37,31 @@ const PrivateRoute = ({ component: Component, authed, ...rest }) => {
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
+const RoutesContainer = ({ authed }) => {
+  if (authed === null) {
+    return (
+      <div className="fas fa-spinner fa-spin" id="spinner" />
+    );
+  }
+  return (
+    <div className="container">
+      <Switch>
+        <PrivateRoute path='/new' component={New} authed={authed} />
+        <PrivateRoute path='/stuff' component={MyStuff} authed={authed} />
+        <PrivateRoute path='/singleStuff/:stuffId' component={SingleStuff} authed={authed} />
+        <PrivateRoute path='/edit/:stuffId' component={Edit} authed={authed} />
+        <PrivateRoute path='/home' component={Home} authed={authed} exact />
+        <PublicRoute path='/login' component={Login} authed={authed} />
+        <Redirect from="*" to="/home"/>
+      </Switch>
+    </div>
+  );
+};
+
 class App extends React.Component {
-  state = { authed: false }
+  state = {
+    authed: null,
+  }
 
   componentDidMount() {
     this.removeListener = firebase.auth().onAuthStateChanged((user) => {
@@ -57,16 +80,7 @@ class App extends React.Component {
         <BrowserRouter>
           <React.Fragment>
             <MyNavbar authed={authed} />
-            <div className="container">
-            <Switch>
-              <PublicRoute path='/login' component={Login} authed={authed} />
-              <PrivateRoute path='/new' component={New} authed={authed} />
-              <PrivateRoute path='/stuff' component={MyStuff} authed={authed} />
-              <PrivateRoute path='/singleStuff/:stuffId' component={SingleStuff} authed={authed} />
-              <PrivateRoute path='/edit/:stuffId' component={Edit} authed={authed} />
-              <PublicRoute path='/home' component={Home} authed={authed} exact />
-            </Switch>
-            </div>
+            <RoutesContainer authed={authed} />
           </React.Fragment>
         </BrowserRouter>
       </div>
