@@ -12,6 +12,13 @@ const SingleItem = (props) => {
       .catch((err) => console.error(err));
   }, [props.match.params]);
 
+  const deleteItem = () => {
+    const { stuffId } = props.match.params;
+    itemsData.deleteItem(stuffId)
+      .then(() => props.history.push('/stuff'))
+      .catch((err) => console.error(err));
+  };
+
   return (
     <div className="d-flex justify-content-around m-5">
       <img className="w-25" src={item.itemImage} alt="Item" />
@@ -21,7 +28,7 @@ const SingleItem = (props) => {
         <Link to={`/edit/${props.match.params.stuffId}`}>
           <button className="btn btn-danger">Edit</button>
         </Link>
-        <button className="btn btn-danger">Delete</button>
+        <button className="btn btn-danger m-4" onClick={deleteItem}>Delete</button>
       </div>
     </div>
   );
