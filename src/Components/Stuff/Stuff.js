@@ -11,7 +11,9 @@ const Stuff = (props) => {
               <Link to={`/single/${stuff.id}`}>
                 <button className="btn btn-primary m-2">View</button>
               </Link>
-              <button className="btn btn-warning m-2">Edit</button>
+              <Link to={`/edit/${stuff.id}`}>
+                <button className="btn btn-warning m-2">Edit</button>
+              </Link>
               <button className="btn btn-danger m-2">Delete</button>
             </div>
           </div>;
