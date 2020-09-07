@@ -20,6 +20,7 @@ import Login from '../components/Login/Login';
 import fbConnection from '../helpers/data/connection';
 
 import './App.scss';
+import authData from '../helpers/data/authData';
 
 fbConnection();
 
@@ -37,7 +38,7 @@ const PrivateRoute = ({ component: Component, authed, ...rest }) => {
   return <Route {...rest} render={(props) => routeChecker(props)} />;
 };
 
-const RoutesContainer = ({ authed }) => {
+const RoutesContainer = ({ authed, uid }) => {
   if (authed === null) {
     return (
       <div className="fas fa-spinner fa-spin" id="spinner" />
@@ -48,7 +49,7 @@ const RoutesContainer = ({ authed }) => {
       <Switch>
         <PrivateRoute path='/new' component={New} authed={authed} />
         <PrivateRoute path='/stuff' component={MyStuff} authed={authed} />
-        <PrivateRoute path='/singleStuff/:stuffId' component={SingleStuff} authed={authed} />
+        <PrivateRoute path='/single/:stuffId' component={SingleStuff} authed={authed} />
         <PrivateRoute path='/edit/:stuffId' component={Edit} authed={authed} />
         <PrivateRoute path='/home' component={Home} authed={authed} exact />
         <PublicRoute path='/login' component={Login} authed={authed} />
@@ -61,11 +62,12 @@ const RoutesContainer = ({ authed }) => {
 class App extends React.Component {
   state = {
     authed: null,
+    uid: null,
   }
 
   componentDidMount() {
     this.removeListener = firebase.auth().onAuthStateChanged((user) => {
-      user ? this.setState({ authed: true }) : this.setState({ authed: false });
+      user ? this.setState({ authed: true, uid: authData.getUid() }) : this.setState({ authed: false, uid: null });
     });
   }
 
@@ -74,13 +76,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { authed } = this.state;
+    const { authed, uid } = this.state;
     return (
       <div className="App">
         <BrowserRouter>
           <React.Fragment>
             <MyNavbar authed={authed} />
-            <RoutesContainer authed={authed} />
+            <RoutesContainer authed={authed} uid={uid} />
           </React.Fragment>
         </BrowserRouter>
       </div>
