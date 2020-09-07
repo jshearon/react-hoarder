@@ -14,7 +14,7 @@ const Stuff = (props) => {
               <Link to={`/edit/${stuff.id}`}>
                 <button className="btn btn-warning m-2">Edit</button>
               </Link>
-              <button className="btn btn-danger m-2">Delete</button>
+              <button className="btn btn-danger m-2" onClick={() => { props.deleteItem(stuff.id); }}>Delete</button>
             </div>
           </div>;
 };

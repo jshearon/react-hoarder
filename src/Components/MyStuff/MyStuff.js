@@ -20,10 +20,18 @@ class MyStuff extends React.Component {
     this.getStuff();
   }
 
+  deleteItem = (stuffId) => {
+    itemsData.deleteItem(stuffId)
+      .then(() => {
+        this.getStuff();
+      })
+      .catch((err) => console.error(err));
+  }
+
   render() {
     const { stuff } = this.state;
 
-    const stuffCards = stuff.map((oneStuff) => <Stuff key={oneStuff.id} stuff={oneStuff} />);
+    const stuffCards = stuff.map((oneStuff) => <Stuff key={oneStuff.id} stuff={oneStuff} deleteItem={this.deleteItem} />);
     return (
       <div className="MyStuff">
         <h1>Here's My Stuff</h1>
